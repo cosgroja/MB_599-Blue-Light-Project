@@ -1,0 +1,69 @@
+---
+title: "03_pheatmap_Meta"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# load package
+library(pheatmap)
+library(readr)
+library(tidyverse)
+library(ggpubr)
+library(hrbrthemes)
+library(dendextend)
+```
+
+```{r}
+metaTable_test <- read_csv('C:/Users/yangj/Box/phd/Dave Lab/R/MB599/BL Project/05 Heatmap/05_02_Sig_Meta_10LC_Data.csv')
+metaTable_test <- column_to_rownames(metaTable_test,var="Name")
+
+metaTable_test <- mutate_all(metaTable_test, function(x) as.numeric(as.character(x)))
+
+metaTable_test2 <- as.matrix.data.frame(metaTable_test)
+
+my_hclust_gene <- hclust(dist(metaTable_test2), method = "complete")
+my_gene_col <- cutree(tree = as.dendrogram(my_hclust_gene), k = 2)
+
+my_gene_col <- data.frame(cluster = ifelse(test = my_gene_col == 1, yes = "cluster 2", no = "cluster 1"))
+
+breaksList = seq(0, 1, by = 0.1)
+
+P <- pheatmap(metaTable_test2)
+Q <- pheatmap(metaTable_test2, color = colorRampPalette(c("blue", "white",  "red"))(length(breaksList)), breaks = breaksList, annotation_row = my_gene_col, cellwidth = 10, cellheight = 10)
+Q
+```
+
+```{r}
+ggexport(plotlist = list(Q), 
+         filename = "05_02_10LC_Whole_Heatmap.pdf", width = 8, height = 10)
+```
+
+
+```{r}
+metaTable_test <- read_csv('C:/Users/yangj/Box/phd/Dave Lab/R/MB599/BL Project/05 Heatmap/05_02_Sig_Meta_14LC_Data.csv')
+metaTable_test <- column_to_rownames(metaTable_test,var="Name")
+
+metaTable_test <- mutate_all(metaTable_test, function(x) as.numeric(as.character(x)))
+
+metaTable_test2 <- as.matrix.data.frame(metaTable_test)
+
+my_hclust_gene <- hclust(dist(metaTable_test2), method = "complete")
+my_gene_col <- cutree(tree = as.dendrogram(my_hclust_gene), k = 2)
+
+my_gene_col <- data.frame(cluster = ifelse(test = my_gene_col == 1, yes = "cluster 2", no = "cluster 1"))
+
+breaksList = seq(0, 1, by = 0.1)
+
+P <- pheatmap(metaTable_test2)
+Q <- pheatmap(metaTable_test2, color = colorRampPalette(c("blue", "white",  "red"))(length(breaksList)), breaks = breaksList, annotation_row = my_gene_col, cellwidth = 10, cellheight = 10)
+Q
+```
+
+```{r}
+ggexport(plotlist = list(Q), 
+         filename = "05_02_14LC_Whole_Heatmap.pdf", width = 8, height = 10)
+```

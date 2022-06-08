@@ -1,0 +1,162 @@
+---
+title: "01_PlotPCA"
+author: "Jun"
+date: "4/22/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(ggplot2)
+library(readr)
+library(vegan)
+library(ggpubr)
+library(phyloseq)
+```
+
+
+```{r}
+metaTable_10 <- read_csv('C:/Users/yangj/Box/phd/Dave Lab/R/MB599/BL Project/04 PCoA/04_10LC_OTU.csv')
+
+dMeta_10 <- metaTable_10[-1]
+
+OTU_Matrix_10 <- as.matrix.data.frame(dMeta_10)
+
+rownames(OTU_Matrix_10) <- metaTable_10$...1
+
+TAXTable_10 <- read_csv('C:/Users/yangj/Box/phd/Dave Lab/R/MB599/BL Project/04 PCoA/04_10LC_pretend_TAX.csv')
+
+TAXTable_10 <- TAXTable_10[-1]
+
+rownames(TAXTable_10) <- metaTable_10$...1
+
+TAX_Matrix_10 <- as.matrix.data.frame(TAXTable_10)
+
+OTUTable_10 <- read_csv('C:/Users/yangj/Box/phd/Dave Lab/R/MB599/BL Project/04 PCoA/04_10LC_OTU_Table.csv')
+
+OTUTable_N_10 <- OTUTable_10[-1]
+
+rownames(OTUTable_N_10) <- OTUTable_10$...1
+
+```
+
+```{r}
+OTU_10 = otu_table(OTU_Matrix_10, taxa_are_rows = TRUE)
+
+TAX_10 = tax_table(TAX_Matrix_10)
+
+samples_10 = sample_data(OTUTable_N_10)
+
+rownames(samples_10) <- OTUTable_10$...1
+
+physeq_10 = phyloseq(OTU_10, TAX_10, samples_10)
+
+physeq_10
+```
+
+```{r}
+ord_10 <- ordinate(physeq_10, method = 'PCoA', distance = 'bray')
+
+plot_ordination(physeq_10, ord_10, 'samples', color = 'Location')
+```
+
+```{r}
+dis_physeq_10 <- ordinate(
+  physeq = physeq_10,
+  method = 'CAP',
+  distance = 'bray',
+  formula = ~Location )
+physeq_10@tax_table@.Data[,7]<-rownames(physeq_10@tax_table)
+A <- plot_ordination(
+  physeq =  physeq_10,
+  ordination = dis_physeq_10,
+  type ="Species",
+  label = "Species",
+  title = 'Constrained_PCoA') +
+  geom_point( size = 1)
+B <- plot_ordination(
+  physeq =  physeq_10,
+  ordination = dis_physeq_10,
+  color = 'Location',
+  title = 'Constrained_PCoA') +
+  geom_point( size = 1)
+
+ggexport(plotlist = list(A, B), 
+         filename = "04_10LCPCoA.pdf", width = 8, height = 6)
+
+```
+
+```{r}
+metaTable_14 <- read_csv('C:/Users/yangj/Box/phd/Dave Lab/R/MB599/BL Project/04 PCoA/04_14LC_OTU.csv')
+
+dMeta_14 <- metaTable_14[-1]
+
+OTU_Matrix_14 <- as.matrix.data.frame(dMeta_14)
+
+rownames(OTU_Matrix_14) <- metaTable_14$...1
+
+TAXTable_14 <- read_csv('C:/Users/yangj/Box/phd/Dave Lab/R/MB599/BL Project/04 PCoA/04_14LC_pretend_TAX.csv')
+
+TAXTable_14 <- TAXTable_14[-1]
+
+rownames(TAXTable_14) <- metaTable_14$...1
+
+TAX_Matrix_14 <- as.matrix.data.frame(TAXTable_14)
+
+OTUTable_14 <- read_csv('C:/Users/yangj/Box/phd/Dave Lab/R/MB599/BL Project/04 PCoA/04_14LC_OTU_Table.csv')
+
+OTUTable_N_14 <- OTUTable_14[-1]
+
+rownames(OTUTable_N_14) <- OTUTable_14$...1
+
+```
+
+```{r}
+OTU_14 = otu_table(OTU_Matrix_14, taxa_are_rows = TRUE)
+
+TAX_14 = tax_table(TAX_Matrix_14)
+
+samples_14 = sample_data(OTUTable_N_14)
+
+rownames(samples_14) <- OTUTable_14$...1
+
+physeq_14 = phyloseq(OTU_14, TAX_14, samples_14)
+
+physeq_14
+```
+
+```{r}
+ord_14 <- ordinate(physeq_14, method = 'PCoA', distance = 'bray')
+
+plot_ordination(physeq_14, ord_14, 'samples', color = 'Location')
+```
+
+```{r}
+dis_physeq_14 <- ordinate(
+  physeq = physeq_14,
+  method = 'CAP',
+  distance = 'bray',
+  formula = ~Location )
+
+physeq_14@tax_table@.Data[,7]<-rownames(physeq_14@tax_table)
+A <- plot_ordination(
+  physeq =  physeq_14,
+  ordination = dis_physeq_14,
+  type ="Species",
+  label = "Species",
+  title = 'Constrained_PCoA') +
+  geom_point( size = 1)
+B <- plot_ordination(
+  physeq =  physeq_14,
+  ordination = dis_physeq_14,
+  color = 'Location',
+  title = 'Constrained_PCoA') +
+  geom_point( size = 1)
+
+ggexport(plotlist = list(A, B), 
+         filename = "04_14LCPCoA.pdf", width = 8, height = 6)
+```
