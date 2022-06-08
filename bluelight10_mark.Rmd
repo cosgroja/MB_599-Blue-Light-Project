@@ -1,0 +1,289 @@
+---
+title: "bluelight"
+author: "Emily A Carlson"
+date: "April 29, 2022"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+library(readr)
+library(ggplot2)
+library(ggpubr)
+dat10 <- read_csv("bluelight10.csv")
+head(dat10)
+```
+
+## R Markdown
+
+```{r}
+x <- which(names(dat10) == "treatment") # name of grouping variable
+y <- which(names(dat10) == "HMDB00149" # names of variables to test
+           | names(dat10) == "HMDB00123" |
+             names(dat10) == "HMDB00056" |
+             names(dat10) == "HMDB00161" |
+             names(dat10) == "HMDB00271" |
+             names(dat10) == "HMDB02322" |
+             names(dat10) == "HMDB03911" |
+             names(dat10) == "HMDB00097" |
+             names(dat10) == "HMDB00092" |
+             names(dat10) == "HMDB01906" |
+             names(dat10) == "HMDB00187" |
+             names(dat10) == "HMDB00630" |
+             names(dat10) == "HMDB00870" |
+             names(dat10) == "HMDB00076" |
+             names(dat10) == "HMDB00162" |
+             names(dat10) == "HMDB00043" |
+             names(dat10) == "HMDB00883" |
+             names(dat10) == "HMDB00167" |
+             names(dat10) == "HMDB01406" |
+             names(dat10) == "HMDB00251" |
+             names(dat10) == "HMDB02024" |
+             names(dat10) == "HMDB00079" |
+             names(dat10) == "HMDB00267" |
+             names(dat10) == "HMDB00070" |
+             names(dat10) == "HMDB01432" |
+             names(dat10) == "HMDB01149" |
+             names(dat10) == "HMDB00687" |
+             names(dat10) == "HMDB00172" |
+             names(dat10) == "HMDB00557" |
+             names(dat10) == "HMDB0000214" |
+             names(dat10) == "HMDB00168" |
+             names(dat10) == "HMDB00191" |
+             names(dat10) == "HMDB02108" |
+             names(dat10) == "HMDB00875" |
+             names(dat10) == "HMDB01257" |
+             names(dat10) == "HMDB03464" |
+             names(dat10) == "HMDB00895" |
+             names(dat10) == "HMDB00641" |
+             names(dat10) == "HMDB00182" |
+             names(dat10) == "HMDB0000148" |
+             names(dat10) == "HMDB00696" |
+             names(dat10) == "HMDB00177" |
+             names(dat10) == "HMDB00259" |
+             names(dat10) == "HMDB00062" |
+             names(dat10) == "HMDB00159" |
+             names(dat10) == "HMDB02005" |
+             names(dat10) == "HMDB03584" |
+             names(dat10) == "HMDB00001" |
+             names(dat10) == "HMDB00721" |
+             names(dat10) == "HMDB00517" |
+             names(dat10) == "HMDB01046" |
+             names(dat10) == "HMDB00158" |
+             names(dat10) == "HMDB01565" |
+             names(dat10) == "HMDB01325" |
+             names(dat10) == "HMDB01539" |
+             names(dat10) == "HMDB03334" |
+             names(dat10) == "HMDB00201" |
+             names(dat10) == "HMDB00929" |
+             names(dat10) == "HMDB00684" |
+             names(dat10) == "HMDB04620" |
+             names(dat10) == "HMDB00033" |
+             names(dat10) == "HMDB00089" |
+             names(dat10) == "HMDB00296" |
+             names(dat10) == "HMDB00086" |
+             names(dat10) == "HMDB61717" |
+             names(dat10) == "HMDB00235" |
+             names(dat10) == "HMDB00085" |
+             names(dat10) == "HMDB00050" |
+             names(dat10) == "HMDB00195" |
+             names(dat10) == "HMDB03331" |
+             names(dat10) == "HMDB00133" |
+             names(dat10) == "HMDB00305" |
+             names(dat10) == "HMDB00052" |
+             names(dat10) == "HMDB01173" |
+             names(dat10) == "HMDB0000288" |
+             names(dat10) == "HMDB00058" |
+             names(dat10) == "HMDB01397" |
+             names(dat10) == "HMDB00244" |
+             names(dat10) == "HMDB0000939" |
+             names(dat10) == "HMDB00900" |
+             names(dat10) == "HMDB01185" |
+             names(dat10) == "HMDB00902" |
+             names(dat10) == "HMDB01248" |
+             names(dat10) == "HMDB00115" |
+             names(dat10) == "HMDB00243" |
+             names(dat10) == "HMDB00190" |
+             names(dat10) == "HMDB01051" |
+             names(dat10) == "HMDB00700" |
+             names(dat10) == "HMDB00718" |
+             names(dat10) == "HMDB0000060" |
+             names(dat10) == "HMDB0001259" |
+             names(dat10) == "HMDB0000112" |
+             names(dat10) == "HMDB0000357" |
+             names(dat10) == "HMDB00134" |
+             names(dat10) == "HMDB00300" |
+             names(dat10) == "HMDB00176" |
+             names(dat10) == "HMDB00532" |
+             names(dat10) == "HMDB00254" |
+             names(dat10) == "HMDB01488" |
+             names(dat10) == "HMDB00634" |
+             names(dat10) == "HMDB02092" |
+             names(dat10) == "HMDB00766" |
+             names(dat10) == "HMDB00624" |
+             names(dat10) == "HMDB00223" |
+             names(dat10) == "HMDB00026" |
+             names(dat10) == "HMDB00034" |
+             names(dat10) == "HMDB00157" |
+             names(dat10) == "HMDB00209" |
+             names(dat10) == "HMDB00500" |
+             names(dat10) == "HMDB0000224" |
+             names(dat10) == "HMDB00208" |
+             names(dat10) == "HMDB59655" |
+             names(dat10) == "HMDB00098" |
+             names(dat10) == "HMDB00764" |
+             names(dat10) == "HMDB00292" |
+             names(dat10) == "HMDB62635" |
+             names(dat10) == "HMDB00568" |
+             names(dat10) == "HMDB00462" |
+             names(dat10) == "HMDB03320" |
+             names(dat10) == "HMDB02285" |
+             names(dat10) == "HMDB00289" |
+             names(dat10) == "HMDB01473" |
+             names(dat10) == "HMDB00126" |
+             names(dat10) == "HMDB00958" |
+             names(dat10) == "HMDB00072" |
+             names(dat10) == "HMDB00893" |
+             names(dat10) == "HMDB00904" |
+             names(dat10) == "HMDB00812" |
+             names(dat10) == "HMDB01015" |
+             names(dat10) == "HMDB00211" |
+             names(dat10) == "HMDB00122" |
+             names(dat10) == "HMDB00660" |
+             names(dat10) == "HMDB00247" |
+             names(dat10) == "HMDB00765" |
+             names(dat10) == "HMDB00784" |
+             names(dat10) == "HMDB0000715" |
+             names(dat10) == "HMDB01138" |
+             names(dat10) == "HMDB00127" |
+             names(dat10) == "HMDB00881" |
+             names(dat10) == "HMDB00210" |
+             names(dat10) == "HMDB00099" |
+             names(dat10) == "HMDB0000806" |
+             names(dat10) == "HMDB01548" |
+             names(dat10) == "HMDB00618" |
+             names(dat10) == "HMDB00767" |
+             names(dat10) == "HMDB0000220" |
+             names(dat10) == "HMDB0001401" |
+             names(dat10) == "HMDB01586" |
+             names(dat10) == "HMDB01076" |
+             names(dat10) == "HMDB00124" |
+             names(dat10) == "HMDB02259" |
+             names(dat10) == "HMDB01388" |
+             names(dat10) == "HMDB00673" |
+             names(dat10) == "HMDB00299" |
+             names(dat10) == "HMDB01068" |
+             names(dat10) == "HMDB00125" |
+             names(dat10) == "HMDB00095" |
+             names(dat10) == "HMDB00186" |
+             names(dat10) == "HMDB00258" |
+             names(dat10) == "HMDB00045" |
+             names(dat10) == "HMDB00175" |
+             names(dat10) == "HMDB01341" |
+             names(dat10) == "HMDB00536" |
+             names(dat10) == "HMDB00653" |
+             names(dat10) == "HMDB00286" |
+             names(dat10) == "HMDB00290" |
+             names(dat10) == "HMDB03337" |
+             names(dat10) == "HMDB01487" )
+             
+method <- "t.test" # one of "wilcox.test" or "t.test"
+paired <- FALSE # if paired make sure that in the dataframe you have first all individuals at T1, then all individuals again at T2
+# Edit until here
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+for (i in y) {
+  for (j in x) {
+    ifelse(paired == TRUE,
+           p <- ggpaired(dat10,
+                         x = colnames(dat10[j]), y = colnames(dat10[i]),
+                         color = colnames(dat10[j]), line.color = "gray", line.size = 0.4,
+                         palette = "npg",
+                         legend = "none",
+                         xlab = colnames(dat10[j]),
+                         ylab = colnames(dat10[i]),
+                         add = "jitter"
+           ),
+           p <- ggboxplot(dat10,
+                          x = colnames(dat10[j]), y = colnames(dat10[i]),
+                          color = colnames(dat10[j]),
+                          palette = "npg",
+                          legend = "none",
+                          add = "jitter"
+           )
+    )
+    #  Add p-value
+    print(p + stat_compare_means(aes(label = paste0(..method.., ", p-value = ", ..p.format..)),
+                                 method = method,
+                                 paired = paired,
+                                 # group.by = NULL,
+                                 ref.group = NULL
+    ))
+  }
+}
+```
+````{r}
+library(readr)
+library(ggplot2)
+library(ggpubr)
+
+# remove one level to have only two groups
+dat10b = as.data.frame(dat10)
+dat10b$treatment <- factor(dat10b$treatment)
+
+# boxplots and t-tests for the 4 variables at once
+for (i in 2:4) { # variables to compare are variables 1 to 4
+  boxplot(dat10b[, i] ~ dat10b$treatment, # draw boxplots by group
+    ylab = names(dat10b[i]), # rename y-axis with variable's name
+    xlab = "treatment"
+  )
+  print(t.test(dat10b[, i] ~ dat10b$treatment)) # print results of t-test
+}
+
+raw_pvalue <- numeric(length = length(2:169))
+for (i in (2:169)) {
+  raw_pvalue[i] <- t.test(dat10b[, i] ~ dat10b$treatment,
+    paired = FALSE,
+    alternative = "two.sided"
+  )$p.value
+}
+
+df <- data.frame(
+  Variable = names(dat10b[, 1:169]),
+  raw_pvalue = round(raw_pvalue, 169)
+)
+
+df$Bonferroni <-
+  p.adjust(df$raw_pvalue,
+    method = "bonferroni"
+  )
+df$BH <-
+  p.adjust(df$raw_pvalue,
+    method = "BH"
+  )
+df$Holm <-
+  p.adjust(df$raw_pvalue,
+    method = "holm"
+  )
+df$Hochberg <-
+  p.adjust(df$raw_pvalue,
+    method = "hochberg"
+  )
+df$Hommel <-
+  p.adjust(df$raw_pvalue,
+    method = "hommel"
+  )
+df$BY <-
+  round(p.adjust(df$raw_pvalue,
+    method = "BY"
+  ), 3)
+df
+```
+
+
